@@ -1,88 +1,56 @@
 package it.epicode;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.Date;
+import java.util.List;
+
 @Entity
+@Table(name = "utente")
 public class Utente {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String nome;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, updatable = false)
+    private Long id;
+  private String nome;
     private String cognome;
+    private Date dataNascita ;
 
-    private int dataNascita;
-    private String numeroDiTessera;
+    private Long numeroTessera;
+
+    @ManyToMany
+    @JoinTable(name = "prestito", joinColumns = {
+            @JoinColumn(name = "utente_id")
+    }, inverseJoinColumns = {
+            @JoinColumn(name = "elementocatalogo_id")
+    })
+    private List<ElementoCatalogo> elementiPrestati;
 
 
 
-
-
-
-
-
-
-    public Utente(String nome, String cognome, int dataNascita, String numeroDiTessera) {
+    public  Utente( String nome, String cognome, Date dataNascita, Long numeroTessera ){
         this.nome = nome;
-        this.cognome = cognome;
+        this.cognome =cognome;
+        this.dataNascita= dataNascita;
+        this.numeroTessera=numeroTessera;
 
     }
 
-    public Utente() {
-        this.nome = "";
-        this.cognome = "";
-        this.dataNascita = 0;
-        this.numeroDiTessera = "";
-
+    public Utente(){
 
     }
 
 
 
-    public String getNome() {
-        return nome;
+    public Long getId() {
+        return id;
     }
 
-    public String getCognome() {
-        return cognome;
-    }
-
-
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
-
-    public int getDataNascita() {
-        return dataNascita;
-    }
-
-    public void setDataNascita(int dataNascita) {
-        this.dataNascita = dataNascita;
-    }
-
-    public String getNumeroDiTessera() {
-        return numeroDiTessera;
-    }
-
-    public void setNumeroDiTessera(String numeroDiTessera) {
-        this.numeroDiTessera = numeroDiTessera;
+    public void setId(Long id) {
+        this.id = id;
     }
 
 
 
-    @Override
-    public String toString() {
-        return "Utente{" +
-                "nome='" + nome + '\'' +
-                ", cognome='" + cognome + '\'' +
 
-                ", dataNascita=" + dataNascita +
-                ", numeroDiTessera='" + numeroDiTessera + '\'' +
-                '}';
-    }
 }
